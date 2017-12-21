@@ -108,7 +108,7 @@ export const fmtDate = (date, fmt) => { // author: meizz
  * 格式化日期或时间
  * @param {string} time 需要格式化的时间
  */
-export getTime = (time) => {
+export const getTime = (time) => {
     return fmtDate(new Date(time), 'yyyy-MM-dd hh:mm');
 };
 
@@ -125,7 +125,7 @@ export getTime = (time) => {
   isClass阐述： 如果为true则返回样式，用于样式绑定（V指令:class）
   反之则返回文本，用于文本绑定（v指令 v-text）
 */
-export getTabInfo = (tab, good, top, isClass) => {
+export const getTabInfo = (tab, good, top, isClass) => {
     let str = '';
     let className = '';
     if (top) {
@@ -136,6 +136,10 @@ export getTabInfo = (tab, good, top, isClass) => {
         className = 'good';
     } else {
         switch (tab) {
+            case 'all':
+                str = '全部';
+                className = 'all';
+                break;
             case 'share':
                 str = '分享';
                 className = 'share';
@@ -164,13 +168,13 @@ export getTabInfo = (tab, good, top, isClass) => {
  * @param  {[Number]}  mustRun  [至少多久执行一次]
  * @return {[Function]}         [节流函数]
  */
-export throttle = (fn, wait, mustRun) => {
+export const throttle = (fn, wait, mustRun) => {
     let timeout; // 闭包
-    let startTime = new Date();
+    let startTime = Date.now();
     return function() {
         let context = this;
         let args = arguments;
-        let curTime = new Date();
+        let curTime = Date.now();
 
         clearTimeout(timeout);
         // 如果达到了规定的触发时间间隔，触发 handler
