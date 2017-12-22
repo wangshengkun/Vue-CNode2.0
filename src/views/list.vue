@@ -32,12 +32,16 @@
 				</li>
 			</ul>
 		</section>
+        <nv-top></nv-top>
 	</div>
 </template>
 
 <script>
 	import * as utils from '../libs/utils.js';
 	import nvHeader from '../components/header.vue';
+	import nvTop from '../components/backToTop.vue';
+
+	console.log(nvTop);
 	export default {
 		filters:{
 			getTime(time){
@@ -157,7 +161,8 @@
 			}
 		},
 		components:{
-			nvHeader
+			nvHeader,
+			nvTop
 		}
 	}
 </script>

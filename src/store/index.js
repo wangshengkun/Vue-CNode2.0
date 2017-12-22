@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
-const store = new Vuex.store({
+const store = new Vuex.Store({
 	state:{
 		userInfo:{}
 	},
@@ -12,13 +12,13 @@ const store = new Vuex.store({
 		}
 	},
 	mutations:{
-		setUserInfo(state, payload){
-			state.userInfo = payload;
+		setUserInfo(state, userInfo){
+			state.userInfo = userInfo;
 		}
 	},
 	actions:{
-		setUserInfo({ commit }, payload){
-			commit('setUserInfo', payload);
+		setUserInfo({ commit }, user){
+			commit('setUserInfo', user);
 		}
 	}
 });

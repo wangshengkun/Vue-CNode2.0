@@ -1,7 +1,6 @@
 <template>
 	<section id="sideBar" class="nav-list" :class="{'show':showMenu}">
-		<!-- <user-info></user-info> -->
-		<!-- 登录组件入口尚未添加 -->
+		<user-info></user-info>
 		<section class="list-ul">
 			<router-link class="icon-all iconfont item" :to="{'name': 'list',query:{tab:'all'}}">
 				全部
@@ -27,11 +26,12 @@
 	</section>
 </template>
 <script>
+	import userInfo from './userInfo.vue'
 	export default{
 		replace: true,
 		props:['showMenu'],
 		components:{
-			// 此处将会注册登录组件
+			userInfo
 		}
 	}
 </script>
