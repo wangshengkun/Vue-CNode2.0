@@ -11,7 +11,7 @@
 			<router-link class="icon-share iconfont item" :to="{'name':'list',query:{tab:'share'}}">
 				分享
 			</router-link>
-			<router-link class="icon-ask iconfont item" :to="{'name':'list',query:{tab:'jab'}}">
+			<router-link class="icon-ask iconfont item" :to="{'name':'list',query:{tab:'ask'}}">
 			问答
 			</router-link>
 			<router-link class="icon-job iconfont item" :to="{'name':'list',query:{tab:'job'}}">
@@ -21,7 +21,8 @@
 				消息
 			</router-link>
 			<router-link class="icon-about iconfont item" :to="{'name':'about'}">
-			关于</router-link>
+			关于
+			</router-link>
 		</section>
 	</section>
 </template>

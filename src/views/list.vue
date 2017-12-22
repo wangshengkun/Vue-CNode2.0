@@ -41,7 +41,6 @@
 	import nvHeader from '../components/header.vue';
 	import nvTop from '../components/backToTop.vue';
 
-	console.log(nvTop);
 	export default {
 		filters:{
 			getTime(time){
@@ -84,7 +83,7 @@
 			// 用户再次返回该页面时便可继续加载之前的位置
 			if(to.name === 'topic'){
 				// 记录当前滚动条位置
-				window.winow.sessionStorage.scrollTop = window.scrollTop;
+				window.window.sessionStorage.scrollTop = document.documentElement.scrollTop;
 				// 记录当前页面主题
 				window.window.sessionStorage.topics = JSON.stringify(this.topics);
 				// 记录当前查询参数
@@ -92,7 +91,7 @@
 				// 记录当前tab
 				window.window.sessionStorage.tab = from.query.tab || 'all';
 			}
-			document.removeEventListener('scroll');
+			document.documentElement.removeEventListener('scroll', utils.throttle(this.getScrollData, 500, 1000), false);
 			next();
 		},
 		beforRouteEnter(to, from, next){
@@ -144,20 +143,20 @@
                        	this.getTopics();
                     }  
                 }
-			},
-			watch:{
-				// 切换页面
-				'$route'(to, from){
-					if(to.query && to.query.tab){
-						this.searchKey.tab = to.query.tab;
-						this.topics = [];
-						this.index = {};
-					}
-					this.searchKey.page = 1;
-					this.getTopics();
-					// 隐藏导航栏
-					this.$refs.head.show = false;
+			}
+		},
+		watch:{
+			// 切换页面
+			'$route'(to, from){
+				if(to.query && to.query.tab){
+					this.searchKey.tab = to.query.tab;
+					this.topics = [];
+					this.index = {};
 				}
+				this.searchKey.page = 1;
+				this.getTopics();
+				// 隐藏导航栏
+				this.$refs.head.show = false;
 			}
 		},
 		components:{

@@ -18,5 +18,13 @@ const routers = [{
     path: '/list',
     name: 'list',
     component: List
+},{
+    path: '/topic/:id',
+    name: 'topic',
+    component(resolve){
+        require.ensure(['../views/topic.vue'], () =>{
+            resolve(require('../views/topic.vue'));
+        });
+    }
 }];
 export default routers;

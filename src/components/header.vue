@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<header>
+		<header class="fix-header">
 			<div class="nv-toolbar">
 				<!-- 主题切换选项(控制menu组件)，默认不显示 -->
 				<div class="switch-bar" @click="openMenu" v-if="addSwitch"></div>
