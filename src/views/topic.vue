@@ -48,13 +48,19 @@
 							</div>
 						</section>
 						<div class="reply_content" v-html="item.content"></div>
-						<!-- 回复组件尚未使用 -->
-						
+						<nv-reply :topic.sync="topic" 
+								:topic-id="topicId"
+								:reply-id="item.id" 
+								:reply-to="item.author,loginname"
+								:show.sync="curReplyId"
+								@click="hideItemReply"
+								v-if="userInfo.userId && curReplyId === item.id">
+						</nv-reply>	
 					</li>
 				</ul>
 			</section>
 			<nv-top></nv-top>
-			<!-- 回复组件使用的另一个地方 -->
+			<nv-reply v-if="userInfo.userId" :topic="topic" :topic-id="topicId"></nv-reply>
 		</div>
 		<div class="no-data" v-if="noData">
 			<i class="iconfont icon-empty">&#xe60a;</i>
@@ -66,8 +72,8 @@
 <script>
 	import * as utils from '../libs/utils.js';
 	import nvHeader from '../components/header.vue';
+	import nvReply from '../components/reply.vue';
 	import nvTop from '../components/backToTop.vue';
-	// 还需引入回复组件
 	import {mapGetters} from 'vuex';
 
 	export default{
@@ -158,6 +164,7 @@
 		},
 		components:{
 			nvHeader,
+			nvReply,
 			nvTop
 		}
 	}

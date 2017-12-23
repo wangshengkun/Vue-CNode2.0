@@ -6,7 +6,7 @@ export default {
 	install() {
 		// 注意timer变量所在位置，理解闭包的概念
 		let timer = null;
-		Vue.portotype.$alert = (msg) => {
+		Vue.prototype.$alert = (msg) => {
 			// 若之前的提示节点还存在，则移除
 			let previous = document.querySelector('#alertWeek');
 			if(previous){

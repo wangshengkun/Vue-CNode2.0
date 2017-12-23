@@ -140,6 +140,10 @@ export const getTabInfo = (tab, good, top, isClass) => {
                 str = '全部';
                 className = 'all';
                 break;
+            case 'good':
+                str = '精华';
+                className = 'good';
+                break;
             case 'share':
                 str = '分享';
                 className = 'share';
