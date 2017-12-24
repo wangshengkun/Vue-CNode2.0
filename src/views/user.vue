@@ -2,7 +2,7 @@
 	<div>
 		<nv-header page-type="用户信息" :add-switch="true" :need-add="true">
 		</nv-header>
-		<section class="userInfo">
+		<section class="userInfo" v-if="user">
 			<img class="u-img" :src="user.avatar_url"><br>
 			<span class="u-name" v-text="user.loginname"></span>
 			<div class="u-bottom">
@@ -10,12 +10,14 @@
 				<span class="u-score">积分：{{user.score}}</span>
 			</div>
 		</section>
+		<!-- 拥有v-else指令元素的前一兄弟元素必须有 v-if 或 v-else-if -->
+		<nvLoad v-else></nvLoad>
 		<section class="topics">
 			<ul class="user-tabs">
-				<li class="item br" :class="{'selected': selectItem === 1}" @click="changeItem(1)">
+				<li class="item br" :class="{'selected': tab === 'reply'}" @click="changeTab('reply')">
 					最近回复
 				</li>
-				<li class="item" :class="{'selected': selectItem === 2}" @click="changeItem(2)">
+				<li class="item" :class="{'selected': tab === 'publish'}" @click="changeTab('publish')">
 					最新发布
 				</li>
 			</ul>
@@ -35,8 +37,7 @@
 					</router-link>
 				</section>
 			</div>
-			<div class="no-data" v-show="currentData.length === 0">
-				<i class="iconfont icon-empty">&#xe60a;</i>
+			<div class="no-data" v-show="show">
 				暂无数据!
 			</div>
 		</section>
@@ -46,6 +47,7 @@
 <script>
 	import * as utils from '../libs/utils.js';
 	import nvHeader from '../components/header.vue';
+	import nvLoad from '../components/loading.vue';
 
 	export default{
 		data(){
@@ -54,18 +56,22 @@
 				user:{},
 				// currentData数组用于存储用户回复/发布的内容
 				currentData:[],
-				// margic number
-				selectItem: 1
+				tab: 'reply',
+				show: false
 			}
 		},
 		mounted(){
 			this.getUser();
 		},
+		// 切换tab时DOM会进行更新，在此时重新调用judgeData函数
+		updated(){
+			this.judgeData();
+		},
 		methods:{
 			//切换tab
-			changeItem(idx){
-				this.selectItem = idx;
-				this.currentData = idx === 1 ? this.user.recent_replies : this.user.recent_topics;
+			changeTab(tab){
+				this.tab = tab;
+				this.currentData = tab === 'reply' ? this.user.recent_replies : this.user.recent_topics;
 			},
 			getTime(time){
 				return utils.getTime(time);
@@ -85,14 +91,22 @@
                        this.user = data;
                        if (data.recent_replies.length > 0) {
                             this.currentData = data.recent_replies;
+                            this.judgeData();
                         } else {
                             this.currentData = data.recent_topics;
-                            this.selectItem = 2;
+                            this.tab = 'publish';
+                            this.judgeData();
                         }
 					}).catch((err) =>{
 						console.log(err);
 					})
+				},
+			// 判断当前tab选项是否有数据	
+			judgeData(){
+				if(this.currentData.length === 0){
+					return this.show = true;
 				}
+			}
 		},
 		watch:{
 			'$route' (to, from){
@@ -100,7 +114,8 @@
 			}
 		},
 		components:{
-			nvHeader
+			nvHeader,
+			nvLoad
 		}
 	}	
 </script>

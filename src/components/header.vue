@@ -1,4 +1,5 @@
 <template>
+	<!-- 组件模板需有且仅有一个根元素，所以用div包裹 -->
 	<div>
 		<header class="fix-header">
 			<div class="nv-toolbar">
@@ -22,6 +23,7 @@
 	import Menu from './menu';
 	export default {
 		replace:true,
+		// 接收来自父组件的数据
 		props:{
 			// 主题类别
 			pageType: String,

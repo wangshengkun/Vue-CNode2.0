@@ -43,7 +43,7 @@ const routers = [{
         });
     },
     meta: { requiresAuth: true }
-}, {
+},{
     path: '/about',
     name: 'about',
     component(resolve) {
@@ -51,7 +51,7 @@ const routers = [{
             resolve(require('../views/about.vue'));
         });
     }
-}, {
+},{
     path: '/login',
     name: 'login',
     component(resolve) {
@@ -68,5 +68,8 @@ const routers = [{
         });
     },
     meta: { requiresAuth: true }
+},{
+    path: '*',
+    component: Home
 }];
 export default routers;

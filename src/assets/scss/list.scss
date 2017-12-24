@@ -1,24 +1,23 @@
 #page{
-    padding-top: 44px;
-    background-color: #fff;
-    transition: all .3s ease;
-    overflow-x: hidden;
-    .posts-list{
-        background-color: $white;
+    padding-top: $height;
+    background-color: $white;
+    .topics-list{
         li{
             padding: 10px $padding;
             border-bottom: $border;
         }
         h3{
             @extend .title;
+            // 控制tag样式，着重理解这一段，尤其是伪元素:before
             &:before{
+                // 统一定制tag的样式，不包含背景色
                 content: attr(title);
                 margin-right: 10px;
-                margin-top: -3px;
                 @extend .tag;
                 color: $white;
             }
             &.top:before{
+                // 为不同的主题定制不同的背景色，下同
                 background: #E74C3C;
             }
             &.ask:before{
@@ -36,6 +35,8 @@
         }
         .content{
             padding-top: 10px;
+            // 利用flex布局将子元素沿主轴排列（默认值）
+            // 题外话：flex布局只影响容器内的的子元素
             display: flex;
         }
         .avatar{
@@ -44,19 +45,22 @@
         .info{
             display: block;
             width: 100%;
-            flex: 1;
         }
         p{
             padding: 3px 0;
             display: flex;
             color: $text;
             font-size: $font-info;
+            // 正确理解first-child的概念
+            // 为符合某元素的第一个子元素的所有P元素设置font-size
             &:first-child{
                 font-size: $font-content;
             }
             .name, time:first-child{
                 display: block;
                 width: 100%;
+                // 明白简写的flex所代表的含义
+                // 等同于 flex: 1 1 auto
                 flex: 1;
             }
             b{

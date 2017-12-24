@@ -1,6 +1,9 @@
 <template>
+	<!-- 该组件内容均被包含在section中，符合一个根元素要求 -->
 	<section id="sideBar" class="nav-list" :class="{'show':showMenu}">
+		<!-- 用户信息组件 -->
 		<user-info></user-info>
+		<!-- 真正的menu列表 -->
 		<section class="list-ul">
 			<router-link class="icon-all iconfont item" :to="{'name': 'list',query:{tab:'all'}}">
 				全部
@@ -26,8 +29,10 @@
 		</section>
 	</section>
 </template>
+
 <script>
-	import userInfo from './userInfo.vue'
+	import userInfo from './userInfo.vue';
+
 	export default{
 		replace: true,
 		props:['showMenu'],
@@ -36,18 +41,21 @@
 		}
 	}
 </script>
+
 <style lang="scss">
 	// 侧边栏
 	.nav-list{
+		width: 200px;
 		position: fixed;
 		top: 0;
 		bottom: 0;
+		// 依据width值，将其移出可视范围
 		left: -200px;
-		width: 200px;
 		background-color: #fff;
 		color: #313131;
 		transition: all .3s ease;
 		z-index: 3;
+		// 效果上等价于left:0
 		&.show{
 			transform: translateX(200px);
 		}
@@ -56,7 +64,6 @@
 	.list-ul{
 		margin: 0 24px;
 		border-top: 1px solid #d4d4d4;
-		overflow: hidden;
 		padding-top: 10%;
 		.item{
 			display: block;
@@ -65,12 +72,6 @@
 			line-height: 14px;
 			color: #313131;
 			font-weight: 800;
-			&:last-child{
-				margin-bottom: 50px;
-			}
-			&:before{
-				color: #2c3e50;
-			}
 		}
 		.line{
 			border-top: 1px solid #d4d4d4;

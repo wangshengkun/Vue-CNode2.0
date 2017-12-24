@@ -9,21 +9,21 @@
     z-index: 2; // 遮罩层叠放层次高于整个页面，低于menu列表
 }
 
+// 头部组件样式
 header{
-	border-bottom: 2px solid #e8e8e8;
-	&.fix-header {
-    	width: 100%;
-    	background-color: rgba(255, 255, 255, 0.95);
-    	position: fixed;
+	// 固定header组件
+	&.fix-header{
+		position: fixed;
     	top: 0;
     	left: 0;
-    	transition: all .3s ease;
+    	width: 100%;
     	box-shadow: 0 0 4px rgba(0,0,0,0.25);
-    	z-index: 2;
+    	// 设置其透明度
+    	background-color: rgba(255, 255, 255, 0.95);
   	}
 	.nv-toolbar{
 		width: 100%;
-		height: 44px;
+		height: $height;
 		.switch-bar{
 			position: absolute;
 			top: 0;
@@ -32,7 +32,6 @@ header{
 			height: 44px;
 			background: url("../images/components/nav_icon.png") no-repeat center center;
 			background-size: 19px 16px;
-			z-index: 1; // 提高切换选项的叠放层次
 		}
 		&>span{
 			display: block;
@@ -48,9 +47,7 @@ header{
 			top: 10px;
 			right: 10px;
 			padding: 5px 15px;
-			border-radius: 5px;
 			color: #42b983;
-			z-index: 1; // 提高叠放层次
 		}
 	}
 }

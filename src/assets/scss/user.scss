@@ -1,29 +1,29 @@
-.userInfo {
+.userInfo{
     margin-top:$gap*9;
     width: 100%;
     background-color: $colore7;
     text-align: center;
     height: 180px;
-    .u-img {
+    .u-img{
         width: 100px;
         height: 100px;
         border-radius: 50%;
         margin-top: $gap*3;
         display: inline-block;
     }
-    .u-name {
+    .u-name{
         color: #000;
     }
-    .u-bottom {
+    .u-bottom{
         background-color: $colore7;
         width: 100%;
         margin-top: 20px;
-        .u-time {
+        .u-time{
             width: 50%;
             float: left;
             padding-left: $gap*2;
         }
-        .u-score {
+        .u-score{
             width: 50%;
             float: left;
             text-align: right;
@@ -33,19 +33,13 @@
     }
 }
 
-.message {
-    background-color:#fff;
-    padding: $gap;
-    border-bottom: solid 1px $colord4;
-}
-
-.user-tabs {
+.user-tabs{
     width: 100%;
     height: $gap*8.2;
     list-style: none;
     border-bottom: solid 1px $colord4;
     position: relative;
-    .item {
+    .item{
         width: 50%;
         padding: $gap*2.5 0;
         float: left;
@@ -53,7 +47,7 @@
         text-align: center;
         font-weight: bold;
     }
-    .read {
+    .read{
         font-size: $gap*5;
         color: $color80;
         position: absolute;
@@ -61,17 +55,77 @@
         top: $gap*1.5;
         font-weight: bold;
     }
-    .br {
+    .br{
         border-right: solid 1px $colord4;
     }
-    .selected {
+    .selected{
         color: $red;
         border-bottom: solid 2px $red;
     }
 }
 
-.icon-empty {
-    font-size: $gap*25;
-    color:$colord4;
-    display: block;
+.message{
+    background-color:#fff;
+    padding: $gap;
+    border-bottom: solid 1px $colord4;
+    .user{
+        width: 100%;
+        margin: $gap*2 0;
+        padding: 0 $gap*2;
+        display: flex;
+        .head{
+            display: inline-block;
+            width: $gap*9;
+            height: $gap*9;
+            margin-right: $gap*2;
+            border-radius: 10px;
+            img{
+                width: $gap*9;
+                border: 2px solid #fff6e6;
+                border-radius: 50%;
+            }
+        }
+        .info{
+            overflow: hidden;
+            display: block;
+            width: 100%;
+            flex: 1;
+            .t-title{
+                font-size: $gap*3.6;
+                font-weight: bold;
+                width: 100%;
+                color: #333;
+                @extend .break;
+            }
+            .mt12{
+                margin-top: 12px;
+            }
+            .cl{
+                display: inline-block;
+                width: 68%;
+                .name{
+                    color: $color62;
+                }
+            }
+            .cr{
+                width: 30%;
+                display: inline-block;
+                text-align: right;
+                .name{
+                    margin-top: $gap*2;
+                    color: $color80;
+                    font-size: $gap*2.4;
+                }
+            }
+        }
+    }
+}
+
+.no-data{
+    padding: 10% 0;
+    color: $red;
+    background-color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
 }

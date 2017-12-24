@@ -10,6 +10,7 @@ $red:#ff5a5f;
 $yellow:#feb501;
 $color80:#80bd01;
 $gap:5px;
+$height: 44px;
 
 body{
 	height: 100%;
@@ -18,7 +19,6 @@ body{
 	color: #313131;
 	overflow-x: hidden;
 	line-height: 1;
-	background: url('../images/loading.gif') no-repeat center 250px;
 }
 .mt5{
 	margin-top: $gap;
@@ -49,7 +49,6 @@ body{
 	// Safari
 	display: -webkit-flex;
 	// Chrome, Webkit
-	display: flexbox;
 	display: flex;
 }
 .break{
@@ -57,113 +56,6 @@ body{
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-.user{
-	width: 100%;
-	margin: $gap*2 0;
-	padding: 0 $gap*2;
-	display: flex;
-	.tab{
-		display: inline-block;
-		width: $gap*8;
-		color: $color62;
-		border-radius: $gap;
-		background-color: $colore7;
-		margin-right: $gap*2;
-		text-align: center;
-		height: $gap*4;
-		line-height: $gap*4;
-		vertical-align: middle;
-	}
-	.good{
-		background-color: $color80;
-		color: $colorfff;
-	}
-	.title{
-		font-size: $gap*3.6;
-		font-weight: bold;
-		display: block;
-		width: 100%;
-		flex: 1;
-		@extend .break;
-	}
-	.head{
-		display: inline-block;
-		width: $gap*9;
-		height: $gap*9;
-		margin-right: $gap*2;
-		border-radius: 10px;
-		img{
-			width: $gap*9;
-			border: 2px solid #fff6e6;
-			border-radius: 50%;
-		}
-	}
-	.info{
-		overflow: hidden;
-		display: block;
-		width: 100%;
-		flex: 1;
-		&:after{
-			clear: both;
-		}
-		.t-title{
-			font-size: $gap*3.6;
-			font-weight: bold;
-			width: 100%;
-			color: #333;
-			@extend .break;
-		}
-		.mt12{
-			margin-top: 12px;
-		}
-		.cl{
-			display: inline-block;
-			width: 68%;
-			.name{
-				color: $color62;
-			}
-			.mt10{
-				margin-top: $gap*2;
-			}
-		}
-		.cr{
-			width: 30%;
-			display: inline-block;
-			text-align: right;
-			.name{
-				margin-top: $gap*2;
-				color: $color80;
-				font-size: $gap*2.4;
-			}
-		}
-	}
-}
-.reply_content{
-	padding: 0 $gap*3;
-	margin-bottom: $gap*3;
-	img{
-		width: auto\9;
-		height: auto;
-		max-width: 100%;
-		vertical-align: middle;
-		border: 0;
-		-ms-interpolation-mode: bicubic;
-	}
-	p{
-		line-height: 1.3;
-	}
-}
-.no-data{
-	width: 100%;
-	height: 100%;
-	padding: 40% 0;
-	color: $colord4;
-	display: inline-block;
-	font-size: 18px;
-	text-align: center;
-}
-
-// rewor 分界线
 
 // 颜色
 $white: #fff;

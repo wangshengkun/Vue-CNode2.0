@@ -1,14 +1,15 @@
 <template>
+	<!-- 我想说什么你应该知道了吧：） -->
 	<div>
-		<nv-header page-type="主题" :show-menu="showMenu" :need-add="true" :add-switch="true"></nv-header>
-		<div id="page" :class="{'show-menu':showMenu}" v-if="topic.title">
+		<nv-header page-type="主题" :need-add="true" :add-switch="true"></nv-header>
+		<div id="page" v-if="topic.title">
 			<h2 class="topic-title" v-text="topic.title"></h2>
 			<section class="author-info">
 				<img class="avatar" :src="topic.author.avatar_url">
-				<div class="col">
+				<div class="left">
 					<span>{{topic.author.loginname}}</span>
 					<time>
-						发布于:{{topic.create_at | getTime()}}
+						发布于:{{ getTime(topic.create_at) }}
 					</time>
 				</div>
 				<div class="right">
@@ -16,7 +17,7 @@
 							:class="getTabInfo(topic.tab, topic.good, topic.top, true)"
 							v-text="getTabInfo(topic.tab, topic.good, topic.top, false)">
 					</span>
-					<span class="name">{{topic.visit_count}}次浏览</span>
+					<span>{{topic.visit_count}}次浏览</span>
 				</div>
 			</section>
 			<section class="markdown-body topic-content" v-html="topic.content"></section>
@@ -35,7 +36,7 @@
 									<span class="name" v-text="item.author.loginname"></span>
 									<span class="name mt10">
 										<span></span>
-										发布于:{{item.create_at | getTime()}}
+										发布于:{{ getTime(item.create_at) }}
 									</span>
 								</span>
 								<span class="cr">
@@ -47,11 +48,11 @@
 								</span>
 							</div>
 						</section>
-						<div class="reply_content" v-html="item.content"></div>
+						<div class="reply-content" v-html="item.content"></div>
 						<nv-reply :topic.sync="topic" 
 								:topic-id="topicId"
 								:reply-id="item.id" 
-								:reply-to="item.author,loginname"
+								:reply-to="item.author.loginname"
 								:show.sync="curReplyId"
 								@click="hideItemReply"
 								v-if="userInfo.userId && curReplyId === item.id">
@@ -62,8 +63,8 @@
 			<nv-top></nv-top>
 			<nv-reply v-if="userInfo.userId" :topic="topic" :topic-id="topicId"></nv-reply>
 		</div>
-		<div class="no-data" v-if="noData">
-			<i class="iconfont icon-empty">&#xe60a;</i>
+		<nvLoad v-else></nvLoad>
+		<div class="no-data" v-show="show">
 			该话题不存在！
 		</div>
 	</div>
@@ -74,16 +75,16 @@
 	import nvHeader from '../components/header.vue';
 	import nvReply from '../components/reply.vue';
 	import nvTop from '../components/backToTop.vue';
+	import nvLoad from '../components/loading.vue';
 	import {mapGetters} from 'vuex';
 
 	export default{
 		data(){
 			return{
-				showMenu: false, // 是否张开左侧菜单
 				topic: {},
-				noData: false,
 				topicId: '',
-				curReplyId: ''
+				curReplyId: '',
+				show: false
 			}
 		},
 		computed:{
@@ -91,27 +92,29 @@
 				userInfo: 'getUserInfo'
 			})
 		},
-		filters:{
-			getTime(time){
-				return utils.getTime(time);
-			}
-		},
 		mounted(){
-			// 隐藏左侧展开菜单
-			this.showMenu = false;
 			// 获取url传的tab参数
 			this.topicId = this.$route.params.id;
 			// 加载主题
 			this.axios.get('https://cnodejs.org/api/v1/topic/'+this.topicId)
 			.then((res) =>{
 				this.topic = res.data.data;
+				this.judgeData();
 			}).catch((err) =>{
-				this.noData = true;
+				console.log(err);
 			})
 		},
 		methods:{
-			getTabInfo(tab, good = false, top, isClass){
+			getTabInfo(tab, good, top, isClass){
 				return utils.getTabInfo(tab, good, top, isClass);
+			},
+			getTime(time){
+				return utils.getTime(time);
+			},
+			judgeData(){
+				if(!this.topic.title){
+					this.show = true;
+				}
 			},
 			// 是否点过赞，ups为数组
 			isUps(ups){
@@ -165,7 +168,8 @@
 		components:{
 			nvHeader,
 			nvReply,
-			nvTop
+			nvTop,
+			nvLoad
 		}
 	}
 </script>
