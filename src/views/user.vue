@@ -2,7 +2,7 @@
 	<div>
 		<nv-header page-type="用户信息" :add-switch="true" :need-add="true">
 		</nv-header>
-		<section class="userInfo" v-if="user">
+		<section class="userInfo">
 			<img class="u-img" :src="user.avatar_url"><br>
 			<span class="u-name" v-text="user.loginname"></span>
 			<div class="u-bottom">
@@ -10,8 +10,6 @@
 				<span class="u-score">积分：{{user.score}}</span>
 			</div>
 		</section>
-		<!-- 拥有v-else指令元素的前一兄弟元素必须有 v-if 或 v-else-if -->
-		<nvLoad v-else></nvLoad>
 		<section class="topics">
 			<ul class="user-tabs">
 				<li class="item br" :class="{'selected': tab === 'reply'}" @click="changeTab('reply')">
@@ -41,6 +39,7 @@
 				暂无数据!
 			</div>
 		</section>
+		<nvLoad v-if="loading"></nvLoad>
 	</div>
 </template>
 
@@ -57,11 +56,14 @@
 				// currentData数组用于存储用户回复/发布的内容
 				currentData:[],
 				tab: 'reply',
-				show: false
+				show: false,
+				loading: true
 			}
 		},
 		mounted(){
 			this.getUser();
+			// 将滚轮重定向至顶部
+			document.documentElement.scrollTop = 0;
 		},
 		// 切换tab时DOM会进行更新，在此时重新调用judgeData函数
 		updated(){
@@ -88,7 +90,8 @@
 				this.axios.get('https://cnodejs.org/api/v1/user/'+loginname)
 				.then((res) =>{
                     let data = res.data.data;
-                       this.user = data;
+                    	this.loading = false;
+                       	this.user = data;
                        if (data.recent_replies.length > 0) {
                             this.currentData = data.recent_replies;
                             this.judgeData();

@@ -1,5 +1,5 @@
 <template>
-	<div style="height: 100%">
+	<div>
 		<nv-header page-type="关于" :add-switch="true" :need-add="true"></nv-header>
 		<dl class="about-info">
 			<dt>关于项目</dt>
@@ -13,7 +13,7 @@
 			<dt>意见反馈</dt>
 			<dd>
 				<a href="https://github.com/wangshengkun/Vue-CNode2.0/issues">
-					发表意见或提出需求
+					反馈BUG或提出疑惑
 				</a>
 			</dd>
 		</dl>

@@ -38,6 +38,7 @@
 		</section>
 		<!-- 返回头部组件 -->
         <nv-top></nv-top>
+        <nv-load v-if="loading"></nv-load>
 	</div>
 </template>
 
@@ -45,6 +46,7 @@
 	import * as utils from '../libs/utils.js';
 	import nvHeader from '../components/header.vue';
 	import nvTop from '../components/backToTop.vue';
+	import nvLoad from '../components/loading.vue';
 
 	export default {
 		data(){
@@ -56,7 +58,8 @@
 					limit: 10,
 					tab: 'all',
 					mdrender: true
-				}
+				},
+				loading: true
 			};
 		},
 		// 理解Vue组件生命周期，详见官方文档
@@ -125,6 +128,7 @@
 					params:this.searchKey
 				}).then((res) => {
 					res.data.data.forEach(this.mergeTopics);
+					this.loading = false;
 				}).catch((err) => {
 					console.log(err);
 				})
@@ -154,6 +158,7 @@
 		watch:{
 			// 切换页面,监听menu组件的选项点击
 			'$route'(to, from){
+				this.loading = true;
 				if(to.query && to.query.tab){
 					this.searchKey.tab = to.query.tab;
 					this.topics = [];
@@ -167,7 +172,8 @@
 		},
 		components:{
 			nvHeader,
-			nvTop
+			nvTop,
+			nvLoad
 		}
 	}
 </script>

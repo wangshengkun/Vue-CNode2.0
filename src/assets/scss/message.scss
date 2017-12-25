@@ -1,5 +1,5 @@
 .page {
-    background-color: $colorfff;
+    background-color: $white;
     height: 100%;
     padding: $gap*3 0;
 
@@ -55,7 +55,7 @@
             width: 96%;
             background-color: $color80;
             padding: $gap*2 0;
-            color: $colorfff;
+            color: $white;
         }
         .err {
             border-color: red;

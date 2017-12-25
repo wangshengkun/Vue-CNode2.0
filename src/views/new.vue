@@ -5,6 +5,7 @@
 			<div class="line">
 				选择分类
 				<select class="add-tab" v-model="topic.tab">
+					<option value="dev">测试</option>
 					<option value="share">分享</option>
 					<option value="ask">问答</option>
 					<option value="job">招聘</option>

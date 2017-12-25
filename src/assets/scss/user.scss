@@ -22,11 +22,12 @@
             width: 50%;
             float: left;
             padding-left: $gap*2;
+            color: $color80;
         }
         .u-score{
             width: 50%;
             float: left;
-            text-align: right;
+            text-align: center;
             padding-right: $gap*2;
             color: $color80;
         }
@@ -35,25 +36,17 @@
 
 .user-tabs{
     width: 100%;
-    height: $gap*8.2;
+    height: $gap*8.1;
     list-style: none;
-    border-bottom: solid 1px $colord4;
-    position: relative;
+    display: flex;
+    flex-direction: wrap;
     .item{
         width: 50%;
         padding: $gap*2.5 0;
-        float: left;
         font-size: 16;
         text-align: center;
         font-weight: bold;
-    }
-    .read{
-        font-size: $gap*5;
-        color: $color80;
-        position: absolute;
-        right: $gap*1;
-        top: $gap*1.5;
-        font-weight: bold;
+        border-bottom: solid 1px $colord4;
     }
     .br{
         border-right: solid 1px $colord4;
@@ -62,6 +55,12 @@
         color: $red;
         border-bottom: solid 2px $red;
     }
+}
+
+.break{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .message{

@@ -8,7 +8,7 @@ export default {
 		let timer = null;
 		Vue.prototype.$alert = (msg) => {
 			// 若之前的提示节点还存在，则移除
-			let previous = document.querySelector('#alertWeek');
+			let previous = document.querySelector('#week-alert');
 			if(previous){
 				previous.parentNode.removeChild(previous);				
 			}
@@ -16,7 +16,7 @@ export default {
 			// 创建提示节点
 			let alert = document.createElement('div');
 			alert.setAttribute('class', 'week-alert');
-			alert.setAttribute('id', 'alertWeek');
+			alert.setAttribute('id', 'week-alert');
 
 			document.body.appendChild(alert);
 			alert.innerHTML = msg;
