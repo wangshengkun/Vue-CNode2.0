@@ -4,13 +4,13 @@
 		</nv-header>
 		<div class="page">
 			<ul class="tabs">
-				<li class="item br" :class="{'selected': selectItem === 2}" @click="changeItem(2)">已读消息</li>
-				<li class="item" :class="{'selected': selectItem ===1}" @click="changeItem(1)">
+				<li class="item br" :class="{'selected': selectTab === 'read'}" @click="changeTab('read')">已读消息</li>
+				<li class="item" :class="{'selected': selectTab === 'unread'}" @click="changeTab('unread')">
 					未读消息
 					<i class="iconfont read" v-show="no_read_len > 0" @click="markall">&#xe60c;</i>
 				</li>
 			</ul>
-			<div class="message markdown-body" v-for="(item, idx) in currentData">
+			<div class="message markdown-body" v-for="(item, tab) in currentData">
 				<section class="user">
 					<img class="head" :src="item.author.avatar_url">
 					<div class="info">
@@ -50,8 +50,8 @@
 	export default{
 		data(){
 			return{
-				selectItem: 2,
-				message: {},
+				selectTab: 'unread',
+				messages: {},
 				noData: false,
 				currentData: [],
 				no_read_len: 0
@@ -65,37 +65,38 @@
 		mounted(){
 			this.axios.get('https://cnodejs.org/api/v1/messages',{
 				params:{
-					accesstoken:this.userInfo.token
+					accesstoken: this.$store.state.userInfo.accessToken
 				}
 			}).then((res) => {
-				this.message = res.data.data;
-				this.no_read_len = res.data.data.hasnot_read_messages.length;
+				this.messages = res.data.data;
+				this.no_read_len = this.messages.hasnot_read_messages.length;
+				// 优先显示未读消息
 				if(this.no_read_len > 0){
-					this.currentData = res.data.data.hasnot_read_messages;
+					this.currentData = this.messages.hasnot_read_messages;
 				}else{
-					this.currentData = res.data.data.has_read_messages;
-					this.selectItem = 2;
+					this.currentData = this.messages.has_read_messages;
+					this.selectTab = 'read';
 				}
-				this.noData = this.currentData.length === 0;
+					this.noData = true;
 			}).catch((res) => {
-				this.noData = true;
+				this.$alert(res);
 			})
 		},
 		methods:{
 			// 切换tab
-			changeItem(idx){
-				this.selectItem = idx;
-				this.currentData = idx === 1 ? this.message.hasnot_read_messages : this.message.has_read_messages;
+			changeTab(tab){
+				this.selectTab = tab;
+				this.currentData = tab === 'unread' ? this.messages.hasnot_read_messages : this.messages.has_read_messages;
 				this.noData = this.currentData.length === 0;
 			},
 			// 标记所有为已读
 			markall(){
 				this.axios.post('https://cnodejs.org/api/v1/message/mark_all',{
-					accesstoken: this.userInfo.token
+					accesstoken: this.$store.state.userInfo.token
 				}).then((res) => {
 					window.location.reload();
 				}).catch((err) => {
-					console.log(err);
+					this.$alert(err);
 				})
 			},
 			getTime(time){

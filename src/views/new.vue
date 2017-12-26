@@ -1,23 +1,23 @@
 <template>
 	<div>
-		<nv-header page-type="主题" :add-swith="true"></nv-header>
+		<nv-header page-type="主题" :add-switch="true"></nv-header>
 		<div class="add-container">
 			<div class="line">
 				选择分类
 				<select class="add-tab" v-model="topic.tab">
 					<option value="dev">测试</option>
-					<option value="share">分享</option>
 					<option value="ask">问答</option>
 					<option value="job">招聘</option>
+					<option value="share">分享</option>
 				</select>
 				<a class="add-btn" @click="addTopic">发布</a>
 			</div>
 			<div class="line">
 				<input type="text" class="add-title" v-model="topic.title"
-					:class="{'err': err === 'title'}" max="1000"
-					placeholder="标题，字数10字以上">
+					:class="{'err': err === 'title'}" max="25"
+					placeholder="标题，字数5字以上">
 			</div>
-			<textarea v-model="topic.content" row="35" class="add-content"
+			<textarea v-model="topic.content" rows="20" class="add-content"
 			:class="{'err': err === 'content'}" placeholder="回复支持Markdown语法，请注意标记代码">
 			</textarea>
 		</div>
@@ -32,7 +32,7 @@
 		data(){
 			return{
 				topic:{
-					tab:'share',
+					tab:'dev',
 					title: '',
 					content: ''
 				},
@@ -48,7 +48,7 @@
 			addTopic(){
 				let title = this.topic.title.trim();
 				let contents = this.topic.content.trim();
-				if(!title || title.length < 10){
+				if(!title || title.length < 5){
 					this.err = 'title';
 					return false;
 				}
@@ -56,23 +56,20 @@
 					this.err = 'content';
 					return false;
 				}
-				let postData = {
+				let data = {
 					...this.topic,
-					content: this.topic.content,
-					accesstoken: this.userInfo.token
+					accesstoken: this.$store.state.userInfo.accessToken
 				};
 				this.axios.post('https://cnodejs.org/api/v1/topics',{
-					data: postData
+					...data
 				}).then((res) => {
-					if(res.success){
+					if(res.data.success){
 						this.$router.push({
 							name:'list'
 						})
 					}
 				}).catch((err) => {
-					let error = JSON.parse(err.responseText);
-					this.$alert(error.error_msg);
-					return false;
+					this.$alert(error);
 				})
 			}
 		},
@@ -106,7 +103,7 @@
 				}
 			}
 			.add-title{
-				font-size: 16px;
+				font-size: 12px;
 				border: none;
 				width: 100%;
 				background: transparent;

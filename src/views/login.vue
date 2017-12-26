@@ -3,10 +3,11 @@
 		<nv-header page-type="登录" :add-switch="true"></nv-header>
 		<section class="page-body">
 			<div class="label">
-				<input type="text" class="txt" placeholder="Access Token" v-model="token" maxlength="36">
+				<input type="text" class="txt" placeholder="Access Token" 
+				v-model="accessToken" maxlength="36">
 			</div>
 			<div class="label">
-				<a class="button" @click="logon">登录</a>
+				<a class="button" @click="login">登录</a>
 			</div>
 		</section>
 	</div>
@@ -18,33 +19,35 @@
 	export default{
 		data(){
 			return {
-				token:''
+				accessToken: ''
 			}
 		},
 		methods:{
-			logon(){
-				if(this.token === ''){
+			login(){
+				if(this.accessToken === ''){
 					this.$alert('令牌格式错误，应为36位UUID字符串');
 					return false;
 				}
-				this.axios.post('https://cnodejs.org/api/v1/accesstoken',{
-					accesstoken: this.token
-				}).then((res) => {
+				this.axios.post('https://cnodejs.org/api/v1/accesstoken', {
+          			accesstoken: this.accessToken
+        		}).then((res) => {
 					let user = {
-						loginname: res.loginname,
-						avatar_url: res.avatar_url,
-						userId: res.id,
-						token: this.token
+						loginname: res.data.loginname,
+						avatar_url: res.data.avatar_url,
+						userId: res.data.id,
+						accessToken: this.accessToken
 					};
-					window.window.sessionStorage.user = JSON.stringify(user);
+					// window.window.sessionStorage.user = user;
+					// 建议使用方法而非属性来操作数据
+					window.window.sessionStorage.setItem('user', user);
+					// 利用状态管理模式（Vuex）来操作信息
 					this.$store.dispatch('setUserInfo', user);
 					let redirect = decodeURIComponent(this.$route.query.redirect || '');
-					this.$route.push({
+					this.$router.push({
 						path: redirect
 					})
 				}).catch((err) => {
-					let error = JSON.parse(err.responseText);
-					this.$alert(error.error_msg);
+					this.$alert(err);
 				})
 
 			}

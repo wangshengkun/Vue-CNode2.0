@@ -37,40 +37,24 @@
 				if(!this.content){
 					this.hasErr = true;
 				}else{
-					let time = new Date();
-					let linkUsers = utils.linkUsers(this.content);
-					let htmlText = markdown.toHTML(linkUsers);
-					let replyContent = document.querySelect('.markdown-text').appendChild(htmlText)[0].outerHTML;
+					let time = Date.now();
+					// let linkUsers = utils.linkUsers(this.content);
+					// let htmlText = markdown.toHTML(linkUsers);
 					let postData = {
-						accesstoken: this.userInfo.token,
-						content: this.content + this.author_txt
+						accesstoken: this.$store.state.userInfo.accessToken,
+						content: this.content
 					};
 					if(this.replyId){
 						postData.reply_id = this.replyId;
 					}
-					this.axios.post('https://cnodejs.org/api/v1/topic/'+this.topicId+'replies',{
-						data: postData
+					this.axios.post('https://cnodejs.org/api/v1/topic/'+this.topicId+'/replies',{
+						...postData
 					}).then((res) => {
-						if(res.success){
-							this.topic.replies.push({
-								id: res.reply_id,
-								author:{
-									loginname: this.userInfo.loginname,
-									avatar_url: this.userInfo.avatar_url
-								},
-								content: replyContent,
-								ups:[],
-								create_at: time
-							})
-						}
-						this.content = '';
-						if(this.show){
-							this.$emit('close');
+						if(res.data.success){
+							window.location.reload();
 						}
 					}).catch((err) => {
-						let error = JSON.parse(err.respinseText);
-						this.$alert(error.error_msg);
-						return false;
+						this.$alert(err);
 					})
 				}
 			}

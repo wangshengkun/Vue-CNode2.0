@@ -53,7 +53,7 @@
 								:topic-id="topicId"
 								:reply-id="item.id" 
 								:reply-to="item.author.loginname"
-								:show.sync="curReplyId"
+								v-show="replyShow"
 								@click="hideItemReply"
 								v-if="userInfo.userId && curReplyId === item.id">
 						</nv-reply>	
@@ -84,13 +84,17 @@
 				topic: {},
 				topicId: '',
 				curReplyId: '',
-				show: false
+				show: false,
+				replyShow: false
 			}
 		},
 		computed:{
 			...mapGetters({
 				userInfo: 'getUserInfo'
-			})
+			}),
+			key(){
+				return this.showKey % 2 !== 0 ? true : false
+			}
 		},
 		mounted(){
 			// 获取url传的tab参数
@@ -132,6 +136,7 @@
 						}
 					})
 				}
+				this.replyShow = !this.replyShow;
 			},
 			hideItemReply(){
 				this.curReplyId = '';
@@ -147,20 +152,17 @@
 						}
 					})
 				}else{
-					// 需修改
 					this.axios.post('https://cnodejs.org/api/v1/reply/'+item.id+'/ups',{
-						accesstoken: this.userInfo.token
+						accesstoken: this.$store.state.userInfo.accessToken
 					}).then((res) => {
-						if(res.action === 'down'){
+						if(res.data.action === 'down'){
 							let index = item.ups.indexOf(this.userInfo.userId);
 							item.ups.splice(index, 1);
 						}else{
 							item.ups.push(this.userInfo.userId);
 						}
 					}).catch((err) =>{
-                        let error = JSON.parse(err);
-                        this.$alert(error.error_msg);
-                        return false;
+                        this.$alert(err);
 					})
 				}
 			}
