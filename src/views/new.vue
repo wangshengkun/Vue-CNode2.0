@@ -18,21 +18,24 @@
 					placeholder="标题，字数5字以上">
 			</div>
 			<textarea v-model="topic.content" rows="20" class="add-content"
-			:class="{'err': err === 'content'}" placeholder="回复支持Markdown语法，请注意标记代码">
+			:class="{'err': err === 'content'}" placeholder="支持Markdown语法，请注意标记代码">
 			</textarea>
 		</div>
 	</div>
 </template>
 
 <script>
+	import * as utils from '../libs/utils.js';
 	import nvHeader from '../components/header.vue';
 	import { mapGetters} from 'vuex';
+
+	const markdown = require('markdown').markdown;
 
 	export default{
 		data(){
 			return{
 				topic:{
-					tab:'dev',
+					tab:'dev',  // 为维护CNode社区版面，请在测试区发帖
 					title: '',
 					content: ''
 				},
@@ -56,13 +59,20 @@
 					this.err = 'content';
 					return false;
 				}
+
+				let linkUsers = utils.linkUsers(this.topic.content);
+				let htmlText = markdown.toHTML(linkUsers);
+				this.topic.content = htmlText;
 				let data = {
 					...this.topic,
 					accesstoken: this.$store.state.userInfo.accessToken
 				};
+				
 				this.axios.post('https://cnodejs.org/api/v1/topics',{
 					...data
 				}).then((res) => {
+					// 默认发测试帖，本App的list页面不包含此tab
+					// 你可以从你的个人信息模块查看到发帖纪录
 					if(res.data.success){
 						this.$router.push({
 							name:'list'

@@ -2,6 +2,7 @@
 	<div>
 		<nv-header page-type="用户信息" :add-switch="true" :need-add="true">
 		</nv-header>
+		<!-- 用户基本信息 -->
 		<section class="userInfo">
 			<img class="u-img" :src="user.avatar_url"><br>
 			<span class="u-name" v-text="user.loginname"></span>
@@ -10,6 +11,7 @@
 				<span class="u-score">积分：{{user.score}}</span>
 			</div>
 		</section>
+		<!-- 用户参与的话题 -->
 		<section class="topics">
 			<ul class="user-tabs">
 				<li class="item br" :class="{'selected': tab === 'reply'}" @click="changeTab('reply')">
@@ -56,7 +58,9 @@
 				// currentData数组用于存储用户回复/发布的内容
 				currentData:[],
 				tab: 'reply',
+				// 控制no-data
 				show: false,
+				// 控制loading组件
 				loading: true
 			}
 		},

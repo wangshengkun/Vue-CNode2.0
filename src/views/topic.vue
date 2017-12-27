@@ -4,8 +4,11 @@
 		<nv-header page-type="主题" :need-add="true" :add-switch="true"></nv-header>
 		<div id="page" v-if="topic.title">
 			<h2 class="topic-title" v-text="topic.title"></h2>
+			<!-- 作者信息 -->
 			<section class="author-info">
-				<img class="avatar" :src="topic.author.avatar_url">
+				<router-link :to="{name:'user',params:{loginname:topic.author.loginname}}">
+					<img class="avatar" :src="topic.author.avatar_url">
+				</router-link>
 				<div class="left">
 					<span>{{topic.author.loginname}}</span>
 					<time>
@@ -20,10 +23,12 @@
 					<span>{{topic.visit_count}}次浏览</span>
 				</div>
 			</section>
+			<!-- 文章内容 -->
 			<section class="markdown-body topic-content" v-html="topic.content"></section>
 			<h3 class="topic-reply">
 				<strong>{{topic.reply_count}}</strong>回复
 			</h3>
+			<!-- 回复列表 -->
 			<section class="reply-list">
 				<ul>
 					<li v-for="item in topic.replies">
@@ -40,29 +45,34 @@
 									</span>
 								</span>
 								<span class="cr">
+									<!-- 点赞 -->
 									<span class="iconfont icon"
 									:class="{'uped':isUps(item.ups)}"
 									@click="upReply(item)">&#xe608;</span>
 									{{item.ups.length}}
+									<!-- 回复 -->
 									<span class="iconfont icon" @click="addReply(item.id)">&#xe609;</span>
 								</span>
 							</div>
 						</section>
-						<div class="reply-content" v-html="item.content"></div>
-						<nv-reply :topic.sync="topic" 
+						<div class="reply-content markdown-body" v-html="item.content"></div>
+						<!-- 针对用户的回复框 -->
+						<!-- 弄懂为什么使用.sync修饰符 -->
+						<!-- 结合reply组件阅读 -->
+						<nv-reply :topic.sync="topic"
 								:topic-id="topicId"
 								:reply-id="item.id" 
 								:reply-to="item.author.loginname"
-								v-show="replyShow"
-								@click="hideItemReply"
 								v-if="userInfo.userId && curReplyId === item.id">
 						</nv-reply>	
 					</li>
 				</ul>
 			</section>
 			<nv-top></nv-top>
+			<!-- 针对话题的回复框 -->
 			<nv-reply v-if="userInfo.userId" :topic="topic" :topic-id="topicId"></nv-reply>
 		</div>
+		<!-- loading组件 -->
 		<nvLoad v-else></nvLoad>
 		<div class="no-data" v-show="show">
 			该话题不存在！
@@ -81,20 +91,16 @@
 	export default{
 		data(){
 			return{
-				topic: {},
-				topicId: '',
-				curReplyId: '',
-				show: false,
-				replyShow: false
+				topic: {}, // 存储话题数据
+				topicId: '', // 当前话题ID
+				curReplyId: '', // 控制针对用户的回复框
+				show: false // 控制no-data显示
 			}
 		},
 		computed:{
 			...mapGetters({
 				userInfo: 'getUserInfo'
-			}),
-			key(){
-				return this.showKey % 2 !== 0 ? true : false
-			}
+			})
 		},
 		mounted(){
 			// 获取url传的tab参数
@@ -105,7 +111,7 @@
 				this.topic = res.data.data;
 				this.judgeData();
 			}).catch((err) =>{
-				console.log(err);
+				this.$alert(err);
 			})
 		},
 		methods:{
@@ -115,35 +121,21 @@
 			getTime(time){
 				return utils.getTime(time);
 			},
+			// 以话题标题为决策点，判断是否有内容
 			judgeData(){
 				if(!this.topic.title){
+					// 若不存在话题标题，则显示no-data框
 					this.show = true;
 				}
 			},
-			// 是否点过赞，ups为数组
+			// 控制点赞样式
 			isUps(ups){
+				// 若用户ID存在于ups数组中，则点赞过
 				return ups.indexOf(this.userInfo.userId) !== -1 ? true : false;
 			},
-			// 添加回复
-			addReply(id){
-				this.curReplyId = id;
-				// 若在未登录情况下点击回复按钮则返回到‘登录’路由
-				if(!this.userInfo.userId){
-					this.$router.push({
-						name:'login',
-						params:{
-							redirect: encodeURIComponent(this.$route.path)
-						}
-					})
-				}
-				this.replyShow = !this.replyShow;
-			},
-			hideItemReply(){
-				this.curReplyId = '';
-			},
-			// 点赞该回复
+			// 点赞某回复
 			upReply(item){
-				// 如未登录，则跳转
+				// 如未登录，则跳转到登录界面
 				if(!this.userInfo.userId){
 					this.$router.push({
 						name: 'login',
@@ -152,17 +144,35 @@
 						}
 					})
 				}else{
+					// 注意axios的参数写法
 					this.axios.post('https://cnodejs.org/api/v1/reply/'+item.id+'/ups',{
 						accesstoken: this.$store.state.userInfo.accessToken
 					}).then((res) => {
+						// 若接口表示动作为取消
 						if(res.data.action === 'down'){
+							// 则从点赞数组中删除该登录用户id
 							let index = item.ups.indexOf(this.userInfo.userId);
 							item.ups.splice(index, 1);
 						}else{
+							// 反之则添加
 							item.ups.push(this.userInfo.userId);
 						}
 					}).catch((err) =>{
                         this.$alert(err);
+					})
+				}
+			},
+			// 添加回复
+			addReply(id){
+				// 为出现针对用户的回复框而准备
+				this.curReplyId = id;
+				// 若在未登录情况下点击回复按钮则返回到‘登录’路由
+				if(!this.userInfo.userId){
+					this.$router.push({
+						name:'login',
+						params:{
+							redirect: encodeURIComponent(this.$route.path)
+						}
 					})
 				}
 			}

@@ -100,17 +100,6 @@
 			// 每个导航守卫都需调用next方法！
 			next();
 		},
-		beforRouteEnter(to, from, next){
-			if(from.name !== 'topic'){
-				// 路由导航后移除之前记录的数据
-				if(window.window.sessionStorage.tab){
-					window.window.sessionStorage.removeItem('topics');
-					window.window.sessionStorgae.removeItem('searchKey');
-					window.window.sessionStorage.removeItem('tab');
-				}
-			}
-			next();
-		},
 		methods:{
 			// 获取title文字
             getTitleStr(tab) {

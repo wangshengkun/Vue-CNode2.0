@@ -50,11 +50,11 @@
 	export default{
 		data(){
 			return{
-				selectTab: 'unread',
-				messages: {},
-				noData: false,
-				currentData: [],
-				no_read_len: 0
+				selectTab: 'unread', // 出于用户体验，优先展示未读消息
+				messages: {}, // 存储消息数据
+				currentData: [], // 用户所选定的数据
+				no_read_len: 0,
+				noData: false
 			}
 		},
 		computed:{
@@ -63,6 +63,7 @@
 			})
 		},
 		mounted(){
+			// 注意区分axios中get、post中参数的区别
 			this.axios.get('https://cnodejs.org/api/v1/messages',{
 				params:{
 					accesstoken: this.$store.state.userInfo.accessToken
@@ -77,12 +78,15 @@
 					this.currentData = this.messages.has_read_messages;
 					this.selectTab = 'read';
 				}
-					this.noData = true;
+				// this.noData = true;
 			}).catch((res) => {
 				this.$alert(res);
 			})
 		},
 		methods:{
+			getTime(time){
+				return utils.getTime(time);
+			},
 			// 切换tab
 			changeTab(tab){
 				this.selectTab = tab;
@@ -92,15 +96,16 @@
 			// 标记所有为已读
 			markall(){
 				this.axios.post('https://cnodejs.org/api/v1/message/mark_all',{
-					accesstoken: this.$store.state.userInfo.token
+					accesstoken: this.$store.state.userInfo.accessToken
 				}).then((res) => {
-					window.location.reload();
+					if(res.data.success === true){
+						window.location.reload();
+					}else{
+						this.$alert("对不起，操作失败");
+					}
 				}).catch((err) => {
 					this.$alert(err);
 				})
-			},
-			getTime(time){
-				return utils.getTime(time);
 			}
 		},
 		components:{

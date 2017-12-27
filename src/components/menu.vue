@@ -26,6 +26,9 @@
 			<router-link class="icon-about iconfont item" :to="{'name':'about'}">
 				关于
 			</router-link>
+			<div class="icon-config iconfont item" @click="loginOut" v-if="show">
+				退出
+			</div>
 		</section>
 	</section>
 </template>
@@ -36,6 +39,40 @@
 	export default{
 		replace: true,
 		props:['showMenu'],
+		data(){
+			return{
+				show: false // 退出按钮默认不出现
+			}
+		},
+		mounted(){
+			// 在挂载时验证是否登录
+			this.checkLogon();
+		},
+		methods:{
+			checkLogon(){
+				// 若用户已登陆，则出现退出按钮
+				if(window.window.sessionStorage.getItem('user') !== null){
+					this.show = true;
+				}else{
+					this.show = false;
+				}
+			},
+			loginOut(){
+				// 清除sessionStorage中的用户数据
+				window.window.sessionStorage.removeItem("user");
+				// 重置Vuex中的数据
+				this.$store.state.userInfo = {};
+				// 跳转至新的页面
+				this.$router.push({
+					path:"list",
+					query:{
+						tab:'all'
+					}
+				});
+				// 隐藏退出按钮
+				this.show = false;
+			}
+		},
 		components:{
 			userInfo
 		}

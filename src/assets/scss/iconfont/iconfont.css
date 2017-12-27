@@ -18,7 +18,7 @@
 }
 .icon-add:before { content: "\e60d"; margin-right: 30px; }
 .icon-share:before { content: "\e600"; margin-right: 30px; }
-.icon-shezhi:before { content: "\e601"; margin-right: 30px;}
+.icon-config:before { content: "\e601"; margin-right: 30px;}
 .icon-ask:before { content: "\e602"; margin-right: 30px;}
 .icon-good:before { content: "\e603"; margin-right: 30px;}
 .icon-all:before { content: "\e604"; margin-right: 30px;}

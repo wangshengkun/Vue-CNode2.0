@@ -19,6 +19,7 @@
 </template>
 <script>
 	import {mapGetters} from 'vuex';
+	
 	export default{
 		replace: true,
 		computed:{
