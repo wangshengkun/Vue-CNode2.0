@@ -53,7 +53,7 @@
 	export default{
 		data(){
 			return{
-				// user对象用于存储整个对象的数据，所以下方有 user = d.data
+				// user对象用于存储整个对象的数据
 				user:{},
 				// currentData数组用于存储用户回复/发布的内容
 				currentData:[],

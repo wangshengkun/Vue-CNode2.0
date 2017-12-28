@@ -1,8 +1,9 @@
 <template>
-	<div style="height: 100%">
+	<div>
 		<nv-header page-type="消息" :add-switch="true":need-add="true">
 		</nv-header>
 		<div class="page">
+			<!-- 切换列表 -->
 			<ul class="tabs">
 				<li class="item br" :class="{'selected': selectTab === 'read'}" @click="changeTab('read')">已读消息</li>
 				<li class="item" :class="{'selected': selectTab === 'unread'}" @click="changeTab('unread')">
@@ -10,7 +11,9 @@
 					<i class="iconfont read" v-show="no_read_len > 0" @click="markall">&#xe60c;</i>
 				</li>
 			</ul>
+			<!-- 消息部分 -->
 			<div class="message markdown-body" v-for="(item, tab) in currentData">
+				<!-- 消息细节 -->
 				<section class="user">
 					<img class="head" :src="item.author.avatar_url">
 					<div class="info">
@@ -28,7 +31,9 @@
 						</span>
 					</div>
 				</section>
+				<!-- 消息内容 -->
 				<div class="reply_content" v-html="item.reply.content"></div>
+				<!-- 回复所在的话题 -->
 				<router-link :to="{name:'topic', params:{id:item.topic.id}}">
 					<div class="topic-title">
 						话题:{{item.topic.title}}
@@ -78,7 +83,6 @@
 					this.currentData = this.messages.has_read_messages;
 					this.selectTab = 'read';
 				}
-				// this.noData = true;
 			}).catch((res) => {
 				this.$alert(res);
 			})
@@ -98,8 +102,11 @@
 				this.axios.post('https://cnodejs.org/api/v1/message/mark_all',{
 					accesstoken: this.$store.state.userInfo.accessToken
 				}).then((res) => {
+					// 若标记成功
 					if(res.data.success === true){
-						window.location.reload();
+						// 则切换到已读列表
+						this.currentData = this.messages.has_read_messages;
+						this.selectTab = 'read';
 					}else{
 						this.$alert("对不起，操作失败");
 					}

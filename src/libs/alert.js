@@ -18,11 +18,14 @@ export default {
 			alert.setAttribute('class', 'week-alert');
 			alert.setAttribute('id', 'week-alert');
 
+			// 插入提示节点
 			document.body.appendChild(alert);
 			alert.innerHTML = msg;
 			alert.classList.add('alert-show');
 
+			// 若存在超时ID，则取消还未开始的调用 
 			clearTimeout(timer);
+			// 2秒后移除提示节点
 			timer = setTimeout(() => {
 				document.body.removeChild(alert);
 			},2000);

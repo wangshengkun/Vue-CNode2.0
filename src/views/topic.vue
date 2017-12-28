@@ -55,14 +55,17 @@
 								</span>
 							</div>
 						</section>
-						<div class="reply-content markdown-body" v-html="item.content"></div>
+						<div class="reply-content" v-html="item.content"></div>
 						<!-- 针对用户的回复框 -->
 						<!-- 弄懂为什么使用.sync修饰符 -->
+						<!-- 以及父子组件的事件触发机制 -->
 						<!-- 结合reply组件阅读 -->
 						<nv-reply :topic.sync="topic"
 								:topic-id="topicId"
 								:reply-id="item.id" 
 								:reply-to="item.author.loginname"
+								:showReply.sync="curReplyId"
+                                @close="hideItemReply"
 								v-if="userInfo.userId && curReplyId === item.id">
 						</nv-reply>	
 					</li>
@@ -136,7 +139,7 @@
 			// 点赞某回复
 			upReply(item){
 				// 如未登录，则跳转到登录界面
-				if(!this.userInfo.userId){
+				if(!this.$store.state.userInfo.userId){
 					this.$router.push({
 						name: 'login',
 						params:{
@@ -164,7 +167,7 @@
 			},
 			// 添加回复
 			addReply(id){
-				// 为出现针对用户的回复框而准备
+				// 与showReply属性绑定
 				this.curReplyId = id;
 				// 若在未登录情况下点击回复按钮则返回到‘登录’路由
 				if(!this.userInfo.userId){
@@ -175,7 +178,15 @@
 						}
 					})
 				}
-			}
+			},
+			// 隐藏回复框
+			// 若子组件触发了close自定义事件，则调用
+			hideItemReply() {
+				// 将curReplyId重置为空
+				// 使之与item.id不全等
+				// v-if指令不满足，从而隐藏
+                this.curReplyId = '';
+            }
 		},
 		components:{
 			nvHeader,

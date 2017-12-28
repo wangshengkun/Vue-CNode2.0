@@ -21,10 +21,6 @@ const router = new VueRouter({
 
 // 登录中间验证，页面需要登录而没有登录的情况直接跳转登录
 router.beforeEach((to, from, next) => {
-    // 处理左侧滚动不影响右边
-    // $('html, body, #page').removeClass('scroll-hide');
-    // $('body').css('overflow', 'auto');
-    document.body.style.overflow = 'auto';
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.state.userInfo.userId) {
             next();

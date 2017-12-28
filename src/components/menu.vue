@@ -64,10 +64,7 @@
 				this.$store.state.userInfo = {};
 				// 跳转至新的页面
 				this.$router.push({
-					path:"list",
-					query:{
-						tab:'all'
-					}
+					name:"list"			
 				});
 				// 隐藏退出按钮
 				this.show = false;

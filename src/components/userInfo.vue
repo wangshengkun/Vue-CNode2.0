@@ -29,6 +29,7 @@
 		},
 		methods:{
 			goEnter(){
+				// 编程式导航
 				this.$router.push({
 					name: 'login',
 					query:{

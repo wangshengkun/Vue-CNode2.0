@@ -59,18 +59,18 @@
 </script>
 
 <style lang='scss'>
-	.page-body {
+	.page-body{
         padding: 50px 15px;
         min-height: 400px;
         background-color: #fff;
-        .label {
+        .label{
             display: inline-block;
             width: 100%;
             margin-top: 15px;
             position: relative;
             left: 0;
             top: 0;
-            .txt {
+            .txt{
                 padding: 12px 0;
                 border: none;
                 border-bottom: 1px solid #4fc08d;
@@ -79,7 +79,7 @@
                 font-size: 14px;
                 color: #313131;
             }
-            .button {
+            .button{
                 display: inline-block;
                 width: 99%;
                 height: 42px;
@@ -93,7 +93,7 @@
                 text-align: center;
                 vertical-align: middle;
             }
-            .file {
+            .file{
                 position: absolute;
                 top: 0;
                 left: 0;

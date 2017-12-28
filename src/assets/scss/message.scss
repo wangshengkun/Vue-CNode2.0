@@ -58,12 +58,15 @@
             color: $white;
         }
         .err {
-            border-color: red;
+            border-color: $red;
         }
     }
     .message {
         border-bottom: solid 1px $colord4;
         padding: $gap*2 0;
+        .reply_content{
+            padding: 0 $gap*4;
+        }
     }
     .tabs {
         width: 100%;

@@ -25,11 +25,8 @@
 </template>
 
 <script>
-	import * as utils from '../libs/utils.js';
 	import nvHeader from '../components/header.vue';
 	import { mapGetters} from 'vuex';
-
-	const markdown = require('markdown').markdown;
 
 	export default{
 		data(){
@@ -59,11 +56,11 @@
 					this.err = 'content';
 					return false;
 				}
-
-				let linkUsers = utils.linkUsers(this.topic.content);
-				let htmlText = markdown.toHTML(linkUsers);
-				this.topic.content = htmlText;
+				// 由于发帖完毕后跳转至list页面
+				// 从而无需伪造数据
+				// 因此此处不再添加markdown语法解析器
 				let data = {
+					// 对象解构
 					...this.topic,
 					accesstoken: this.$store.state.userInfo.accessToken
 				};

@@ -1,30 +1,9 @@
-export const getCheck = {
-	// 匹配邮箱
-	checkEmail(email) {
-		let filter = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-		if(filter.test(email)){
-			return true;
-		}else {
-			return false;
-		}
-	},
-	// 匹配手机号
-	checkPhone(num){
-		let filter = /^1[34578]\d{9}$/;
-		if(filter.test(num)){
-			return true;
-		}else {
-			return false;
-		}
-	}
-};
-
 /**
  * 从文本中提取出@username 标记的用户名数组
  * @param {String} text 文本内容
  * @return {Array} 用户名数组
  */
-export const fetchUsers = (text) => {
+const fetchUsers = (text) => {
     if (!text) {
         return [];
     }
@@ -83,7 +62,7 @@ export const linkUsers = (text) => {
  *   (new Date()).Format('yyyy-MM-dd hh:mm:ss.S') ==> 2006-07-02 08:09:04.423
  *   (new Date()).Format('yyyy-M-d h:m:s.S')      ==> 2006-7-2 8:9:4.18
  */
-export const fmtDate = (date, fmt) => { // author: meizz
+const fmtDate = (date, fmt) => { // author: meizz
     let o = {
         'M+': date.getMonth() + 1, // 月份
         'd+': date.getDate(), // 日
